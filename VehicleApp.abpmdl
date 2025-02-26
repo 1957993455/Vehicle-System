@@ -1,0 +1,101 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "4.0.5",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "9.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.0.4",
+      "isInstalled": true
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.0.4",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "VehicleApp.Application": {
+      "path": "src/VehicleApp.Application/VehicleApp.Application.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.Application.Tests": {
+      "path": "test/VehicleApp.Application.Tests/VehicleApp.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "VehicleApp.Domain.Shared": {
+      "path": "src/VehicleApp.Domain.Shared/VehicleApp.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.Application.Contracts": {
+      "path": "src/VehicleApp.Application.Contracts/VehicleApp.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.HttpApi": {
+      "path": "src/VehicleApp.HttpApi/VehicleApp.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.HttpApi.Client": {
+      "path": "src/VehicleApp.HttpApi.Client/VehicleApp.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.EntityFrameworkCore.Tests": {
+      "path": "test/VehicleApp.EntityFrameworkCore.Tests/VehicleApp.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "VehicleApp.EntityFrameworkCore": {
+      "path": "src/VehicleApp.EntityFrameworkCore/VehicleApp.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.TestBase": {
+      "path": "test/VehicleApp.TestBase/VehicleApp.TestBase.abppkg",
+      "folder": "test"
+    },
+    "VehicleApp.Domain.Tests": {
+      "path": "test/VehicleApp.Domain.Tests/VehicleApp.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "VehicleApp.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/VehicleApp.HttpApi.Client.ConsoleTestApp/VehicleApp.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "VehicleApp.DbMigrator": {
+      "path": "src/VehicleApp.DbMigrator/VehicleApp.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.HttpApi.Host": {
+      "path": "src/VehicleApp.HttpApi.Host/VehicleApp.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "VehicleApp.Domain": {
+      "path": "src/VehicleApp.Domain/VehicleApp.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

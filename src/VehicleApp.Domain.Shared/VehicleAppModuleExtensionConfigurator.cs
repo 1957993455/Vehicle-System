@@ -22,7 +22,6 @@ public static class VehicleAppModuleExtensionConfigurator
 
     private static void ConfigureExistingProperties()
     {
-
     }
 
     private static void ConfigureExtraProperties()
@@ -32,33 +31,35 @@ public static class VehicleAppModuleExtensionConfigurator
            {
                identity.ConfigureUser(user =>
                {
-                   user.AddOrUpdateProperty<string>( //property type: string
+                   user.AddOrUpdateProperty<string?>( //property type: string
                        EntityPropertyExtensionConsts.User.RealName, //property name
                        property =>
                        {
                            property.Attributes.Add(new StringLengthAttribute(64) { MinimumLength = 4 });
                        }
                    );
-                   user.AddOrUpdateProperty<string>(EntityPropertyExtensionConsts.User.Avatar, property =>
+                   user.AddOrUpdateProperty<string?>(EntityPropertyExtensionConsts.User.Avatar, property =>
                    {
                        property.Attributes.Add(new RequiredAttribute());
                    });
                    user.AddOrUpdateProperty<string>(EntityPropertyExtensionConsts.User.Address, property =>
                    {
                    });
-                   user.AddOrUpdateProperty<SexEnum>(EntityPropertyExtensionConsts.User.Sex, property =>
+                   user.AddOrUpdateProperty<SexEnum?>(EntityPropertyExtensionConsts.User.Sex, property =>
                    {
                    });
-                   user.AddOrUpdateProperty<string>(EntityPropertyExtensionConsts.User.IDCardNo, property =>
+                   user.AddOrUpdateProperty<string?>(EntityPropertyExtensionConsts.User.IDCardNo, property =>
                    {
                        property.Attributes.Add(new StringLengthAttribute(18) { MinimumLength = 18 });
                    });
-                   user.AddOrUpdateProperty<bool>(EntityPropertyExtensionConsts.User.IsVerified, property =>
+                   user.AddOrUpdateProperty<bool?>(EntityPropertyExtensionConsts.User.IsVerified, property =>
                    {
                        property.Attributes.Add(new DefaultValueAttribute(false));
                    });
-                   user.AddOrUpdateProperty<int>(EntityPropertyExtensionConsts.User.Age, property =>
+                   user.AddOrUpdateProperty<int?>(EntityPropertyExtensionConsts.User.Age, property =>
                    {
+                       property.Attributes.Add(new RangeAttribute(1, 120));
+                       property.Attributes.Add(new DefaultValueAttribute(0));
                    });
                });
            });

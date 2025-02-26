@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleApp.EntityFrameworkCore.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VehicleApp.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(VehicleAppDbContext))]
-    partial class VehicleAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250226131458_initit")]
+    partial class initit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1328,7 +1331,7 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Age")
+                    b.Property<int>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("Area")
@@ -1405,7 +1408,7 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("IsExternal");
 
-                    b.Property<bool?>("IsVerified")
+                    b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModificationTime")
@@ -1471,7 +1474,7 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("SecurityStamp");
 
-                    b.Property<int?>("Sex")
+                    b.Property<int>("Sex")
                         .HasColumnType("int");
 
                     b.Property<bool>("ShouldChangePasswordOnNextLogin")

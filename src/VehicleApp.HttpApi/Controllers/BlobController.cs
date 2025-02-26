@@ -9,21 +9,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
+using System;
+using System.Threading;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace VehicleApp.HttpApi.Controllers;
 
 [RemoteService]
 [Area("Blob")]
 [Route("api/blob")]
-public class BlobController : VehicleAppController
+public class BlobController(IBlobAppService blobAppService, ILogger<BlobController> logger) : VehicleAppController
 {
-    private readonly IBlobAppService _blobAppService;
-
-    public BlobController(IBlobAppService blobAppService)
-    {
-        _blobAppService = blobAppService;
-    }
-
+    /// <summary>
+    /// 文件上传接口
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    /// <exception cref="UserFriendlyException"></exception>
     [HttpPost("upload")]
     [AllowAnonymous]
     [RequestSizeLimit(5 * 1024 * 1024)] // 5MB 限制
@@ -38,7 +42,7 @@ public class BlobController : VehicleAppController
 
         await file.CopyToAsync(ms);
 
-        var result = await _blobAppService.SaveAsync(new SaveBlobInput
+        var result = await blobAppService.SaveAsync(new SaveBlobInput
         {
             Name = file.FileName,
             ContentType = file.ContentType,
@@ -47,47 +51,93 @@ public class BlobController : VehicleAppController
         return result;
     }
 
+    /// <summary>
+    /// 文件下载接口
+    /// </summary>
+    /// <param name="filePath">文件相对路径（支持URL编码）</param>
+    /// <response code="200">返回文件流</response>
+    /// <response code="400">无效的文件路径</response>
+    /// <response code="404">文件不存在</response>
     [AllowAnonymous]
-    [HttpGet("download/{*path}")]
-    public async Task<IActionResult> DownloadAsync(string path)
+    [HttpGet("download/{*filePath}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> DownloadFile(
+     string filePath,
+     CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrEmpty(path))
+        try
         {
-            return BadRequest("文件路径不能为空");
+            // 验证输入有效性
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                return BadRequest("File path cannot be empty");
+            }
+
+            // 解码文件路径
+            var name = Uri.UnescapeDataString(filePath);
+
+            filePath = filePath.Split('/').Last();
+
+            // 获取文件流
+            Stream blobStream = await blobAppService.GetBlobStreamAsync(filePath, cancellationToken);
+
+            if (blobStream == null)
+            {
+                return NotFound("File not found");
+            }
+
+            // 推断内容类型
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            // 提取文件名
+            var fileName = Path.GetFileName(filePath);
+            if (string.IsNullOrEmpty(fileName))
+            {
+                fileName = "download";
+            }
+
+            // 设置下载头
+            var cd = new ContentDispositionHeaderValue("attachment")
+            {
+                FileNameStar = fileName // 处理特殊字符（UTF-8编码）
+            };
+            Response.Headers.Append("Content-Disposition", cd.ToString());
+
+            // 流式返回文件
+            return File(blobStream, contentType);
         }
-
-        var fileBytes = await _blobAppService.GetBlobAsync(path);
-        var contentType = GetContentType(path);
-        var fileName = Path.GetFileName(path);
-
-        return File(fileBytes, contentType, fileName);
-    }
-
-    private string GetContentType(string fileName)
-    {
-        var extension = Path.GetExtension(fileName).ToLower();
-        return extension switch
+        catch (OperationCanceledException)
         {
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".png" => "image/png",
-            ".gif" => "image/gif",
-            ".pdf" => "application/pdf",
-            _ => "application/octet-stream"
-        };
+            // 处理请求取消
+            return StatusCode(499); // Client Closed Request
+        }
+        catch (Exception ex)
+        {
+            // 记录日志
+            Logger.LogError(ex, "Error downloading file: {FilePath}", filePath);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
     }
 
     [AllowAnonymous]
     [HttpGet("{name}")]
     public async Task<IActionResult> GetAsync(string name)
     {
-        var blob = await _blobAppService.GetBlobAsync(name);
+        var blob = await blobAppService.GetBlobAsync(name);
         return Ok(blob);
     }
 
     [HttpDelete("{name}")]
     public Task DeleteAsync(string name)
     {
-        return _blobAppService.DeleteAsync(name);
+        return blobAppService.DeleteAsync(name);
     }
 
     [AllowAnonymous]
@@ -118,7 +168,7 @@ public class BlobController : VehicleAppController
             });
         }
 
-        return await _blobAppService.SaveMultipleAsync(input);
+        return await blobAppService.SaveMultipleAsync(input);
     }
 
     [AllowAnonymous]

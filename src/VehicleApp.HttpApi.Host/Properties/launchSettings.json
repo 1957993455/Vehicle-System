@@ -23,8 +23,8 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
-        "https": {
-            "applicationUrl": "https://localhost:44330",
+        "http": {
+            "applicationUrl": "http://localhost:44330",
             "commandName": "Project",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"

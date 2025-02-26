@@ -10,6 +10,8 @@ using VehicleApp.Application.Contracts.User;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace VehicleApp.HttpApi.Controllers;
 
@@ -46,5 +48,16 @@ public class UserController(IUserAppService userAppService) : VehicleAppControll
     {
         await userAppService.UpdateStatus(id, status);
         return Ok();
+    }
+
+    /// <summary>
+    /// 批量删除用户
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    [HttpPost("batch-delete")]
+    public virtual async Task BatchDeleteAsync([FromQuery] List<Guid> input)
+    {
+        await userAppService.BatchDeleteUsers(input);
     }
 }

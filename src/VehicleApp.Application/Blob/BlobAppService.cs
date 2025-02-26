@@ -67,8 +67,7 @@ public class BlobAppService(
             Name = fileName,
             ContentType = input.ContentType,
             Size = input.Content.Length,
-            Content = content,
-            Url = $"https://localhost:9090/files/{fileName}"
+            Url = $"https://localhost:44330/files/host/default/{fileName}"
         };
     }
 
@@ -147,5 +146,17 @@ public class BlobAppService(
         }
 
         return result;
+    }
+
+    public async Task<Stream> GetBlobStreamAsync(string path, CancellationToken cancellationToken = default)
+    {
+        var res = await blobContainer.GetAsync(path, cancellationToken);
+
+        if (res == null)
+        {
+            throw new UserFriendlyException($"找不到文件: {path}");
+        }
+
+        return res;
     }
 }

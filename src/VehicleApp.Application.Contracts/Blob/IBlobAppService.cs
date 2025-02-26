@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using VehicleApp.Application.Contracts.Blob.Dtos;
@@ -13,4 +14,6 @@ public interface IBlobAppService
     Task DeleteAsync(string name);
 
     Task<SaveBlobsResult> SaveMultipleAsync(SaveBlobsInput input);
+
+    Task<Stream> GetBlobStreamAsync(string path, CancellationToken cancellationToken = default);
 }

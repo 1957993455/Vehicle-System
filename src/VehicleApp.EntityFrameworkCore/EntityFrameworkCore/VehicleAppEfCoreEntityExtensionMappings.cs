@@ -19,28 +19,28 @@ public static class VehicleAppEfCoreEntityExtensionMappings
         OneTimeRunner.Run(() =>
         {
             ObjectExtensionManager.Instance
-                .MapEfCoreProperty<IdentityUser, string>(
+                .MapEfCoreProperty<IdentityUser, string?>(
                     EntityPropertyExtensionConsts.User.RealName,
                     (entityBuilder, propertyBuilder) =>
                     {
                         propertyBuilder.HasMaxLength(128);
                     }
                 )
-                .MapEfCoreProperty<IdentityUser, string>(
+                .MapEfCoreProperty<IdentityUser, string?>(
                 EntityPropertyExtensionConsts.User.Avatar, (entityBuilder, propertyBuilder) =>
                 {
                 })
-                .MapEfCoreProperty<IdentityUser, SexEnum>(
+                .MapEfCoreProperty<IdentityUser, SexEnum?>(
                 EntityPropertyExtensionConsts.User.Sex, (entityBuilder, propertyBuilder) => { })
-                .MapEfCoreProperty<IdentityUser, string>(EntityPropertyExtensionConsts.User.IDCardNo, (e, p) =>
+                .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.IDCardNo, (e, p) =>
                 {
                 })
-                .MapEfCoreProperty<IdentityUser, bool>(EntityPropertyExtensionConsts.User.IsVerified, (e, p) => { })
-                .MapEfCoreProperty<IdentityUser, int>(EntityPropertyExtensionConsts.User.Age, (e, p) => { })
-                .MapEfCoreProperty<IdentityUser, string>(EntityPropertyExtensionConsts.User.Address, (e, p) => { })
-                .MapEfCoreProperty<IdentityUser, string>(EntityPropertyExtensionConsts.User.Country, (e, p) => { })
-                .MapEfCoreProperty<IdentityUser, string>(EntityPropertyExtensionConsts.User.Area, (e, p) => { })
-                .MapEfCoreProperty<IdentityUser, string>(EntityPropertyExtensionConsts.User.Description, (e, p) => { });
+                .MapEfCoreProperty<IdentityUser, bool?>(EntityPropertyExtensionConsts.User.IsVerified, (e, p) => { })
+                .MapEfCoreProperty<IdentityUser, int?>(EntityPropertyExtensionConsts.User.Age, (e, p) => { })
+                .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Address, (e, p) => { })
+                .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Country, (e, p) => { })
+                .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Area, (e, p) => { })
+                .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Description, (e, p) => { });
         });
     }
 }

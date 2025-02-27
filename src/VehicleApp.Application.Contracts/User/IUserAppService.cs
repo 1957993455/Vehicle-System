@@ -25,5 +25,4 @@ public interface IUserAppService : IApplicationService
     /// 批量删除用户
     /// </summary>
     Task BatchDeleteUsers(IEnumerable<Guid> userIds);
-
 }

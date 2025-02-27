@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleApp.EntityFrameworkCore.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VehicleApp.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(VehicleAppDbContext))]
-    partial class VehicleAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250227153009_add-role-extension-property")]
+    partial class addroleextensionproperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1114,7 +1117,7 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasColumnName("ConcurrencyStamp");
 
-                    b.Property<string>("DisplayName")
+                    b.Property<string>("DisaplayName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 

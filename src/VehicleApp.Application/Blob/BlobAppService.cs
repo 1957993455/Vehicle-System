@@ -19,7 +19,7 @@ namespace VehicleApp.Application.Blob;
 public class BlobAppService(
     IBlobContainer blobContainer) : ApplicationService, IBlobAppService
 {
-    private void ValidateFile(SaveBlobInput input)
+    private static void ValidateFile(SaveBlobInput input)
     {
         // 验证文件大小
         if (input.Content.Length > FileValidationConsts.MaxFileSize)
@@ -28,7 +28,7 @@ public class BlobAppService(
         }
 
         // 验证文件类型
-        var extension = Path.GetExtension(input.Name).ToLower();
+        string extension = Path.GetExtension(input.Name).ToLower();
         if (!FileValidationConsts.AllowedImageExtensions.Contains(extension) &&
             !FileValidationConsts.AllowedDocumentExtensions.Contains(extension))
         {
@@ -56,12 +56,11 @@ public class BlobAppService(
         ValidateFile(input);
 
         // 生成唯一文件名
-        var extension = Path.GetExtension(input.Name);
-        var fileName = $"{Guid.NewGuid()}{extension}";
+        string extension = Path.GetExtension(input.Name);
+        string fileName = $"{Guid.NewGuid()}{extension}";
 
         await blobContainer.SaveAsync(fileName, input.Content, overrideExisting: true);
 
-        var content = await blobContainer.GetAllBytesAsync(fileName);
         return new BlobDto
         {
             Name = fileName,
@@ -75,7 +74,7 @@ public class BlobAppService(
     {
         try
         {
-            var flie = await blobContainer.GetAllBytesAsync(path, cancellationToken);
+            byte[] flie = await blobContainer.GetAllBytesAsync(path, cancellationToken);
 
             return flie;
         }
@@ -89,8 +88,8 @@ public class BlobAppService(
     {
         try
         {
-            var blob = await blobContainer.GetAllBytesAsync(name);
-            var contentType = GetContentType(name);
+            byte[] blob = await blobContainer.GetAllBytesAsync(name);
+            string contentType = GetContentType(name);
 
             return new BlobDto
             {
@@ -105,9 +104,9 @@ public class BlobAppService(
         }
     }
 
-    private string GetContentType(string fileName)
+    private static string GetContentType(string fileName)
     {
-        var extension = Path.GetExtension(fileName).ToLower();
+        string extension = Path.GetExtension(fileName).ToLower();
         return extension switch
         {
             ".jpg" or ".jpeg" => "image/jpeg",
@@ -127,12 +126,12 @@ public class BlobAppService(
     {
         var result = new SaveBlobsResult();
 
-        foreach (var file in input.Files)
+        foreach (SaveBlobInput file in input.Files)
         {
             try
             {
                 ValidateFile(file);
-                var savedFile = await SaveAsync(file);
+                BlobDto savedFile = await SaveAsync(file);
                 result.SuccessFiles.Add(savedFile);
             }
             catch (Exception ex)
@@ -150,13 +149,8 @@ public class BlobAppService(
 
     public async Task<Stream> GetBlobStreamAsync(string path, CancellationToken cancellationToken = default)
     {
-        var res = await blobContainer.GetAsync(path, cancellationToken);
+        Stream res = await blobContainer.GetAsync(path, cancellationToken);
 
-        if (res == null)
-        {
-            throw new UserFriendlyException($"找不到文件: {path}");
-        }
-
-        return res;
+        return res ?? throw new UserFriendlyException($"找不到文件: {path}");
     }
 }

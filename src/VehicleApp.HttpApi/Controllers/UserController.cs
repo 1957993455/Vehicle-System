@@ -5,16 +5,15 @@ using Volo.Abp.Identity;
 using Volo.Abp;
 using Asp.Versioning;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 using VehicleApp.Application.Contracts.User;
-using Volo.Abp.Application.Dtos;
-using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Entities;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace VehicleApp.HttpApi.Controllers;
 
+/// <summary>
+/// 用户接口
+/// </summary>
+/// <param name="userAppService"></param>
 [RemoteService]
 [Route("api/identity/users")]
 [Area(IdentityRemoteServiceConsts.ModuleName)]

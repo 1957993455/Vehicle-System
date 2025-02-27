@@ -29,4 +29,9 @@ public static class EntityPropertyExtensionConsts
         //描述
         public const string Description = nameof(Description);
     }
+
+    public class Role
+    {
+        public const string DisplayName = nameof(DisplayName);
+    }
 }

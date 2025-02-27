@@ -18,6 +18,7 @@ public static class VehicleAppEfCoreEntityExtensionMappings
 
         OneTimeRunner.Run(() =>
         {
+            //添加用户拓展属性
             ObjectExtensionManager.Instance
                 .MapEfCoreProperty<IdentityUser, string?>(
                     EntityPropertyExtensionConsts.User.RealName,
@@ -41,6 +42,16 @@ public static class VehicleAppEfCoreEntityExtensionMappings
                 .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Country, (e, p) => { })
                 .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Area, (e, p) => { })
                 .MapEfCoreProperty<IdentityUser, string?>(EntityPropertyExtensionConsts.User.Description, (e, p) => { });
+
+            //添加角色拓展属性
+            ObjectExtensionManager.Instance
+                .MapEfCoreProperty<IdentityRole, string?>(
+                    EntityPropertyExtensionConsts.Role.DisplayName,
+                    (entityBuilder, propertyBuilder) =>
+                    {
+                        propertyBuilder.HasMaxLength(256);
+                    }
+                );
         });
     }
 }

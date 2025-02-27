@@ -62,6 +62,14 @@ public static class VehicleAppModuleExtensionConfigurator
                        property.Attributes.Add(new DefaultValueAttribute(0));
                    });
                });
+
+               identity.ConfigureRole(role =>
+               {
+                   role.AddOrUpdateProperty<string?>(EntityPropertyExtensionConsts.Role.DisplayName, property =>
+                   {
+                       property.Attributes.Add(new StringLengthAttribute(256) { MinimumLength = 4 });
+                   });
+               });
            });
     }
 }

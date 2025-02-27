@@ -24,16 +24,16 @@ public class VIdentityUserAppService(IdentityUserManager userManager,
     public override async Task<PagedResultDto<IdentityUserDto>> GetListAsync(GetIdentityUsersInput input)
     {
         Guid? organizationUnitId = input.GetProperty<Guid?>("OrganizationUnitId") ?? null;
-        bool? isActive = input.GetProperty<bool?>("IsActive");
-
+        int? isActive = input.GetProperty<int?>("IsActive");
+        bool? notActive = isActive.HasValue ? (isActive.Value == 1 ? false : (isActive.Value == 2 ? true : null)) : null;
         long count = await UserRepository.GetCountAsync(input.Filter);
-        var list = await UserRepository.GetListAsync(
+        List<IdentityUser> list = await UserRepository.GetListAsync(
             input.Sorting,
             input.MaxResultCount,
             input.SkipCount,
             input.Filter,
             organizationUnitId: organizationUnitId,
-            notActive: isActive);
+            notActive: notActive);
 
         return new PagedResultDto<IdentityUserDto>(
             count,
@@ -48,13 +48,13 @@ public class VIdentityUserAppService(IdentityUserManager userManager,
             throw new BusinessException(code: IdentityErrorCodes.UserSelfDeletion);
         }
 
-        var user = await UserManager.FindByIdAsync(id.ToString());
+        IdentityUser? user = await UserManager.FindByIdAsync(id.ToString());
         if (user == null)
         {
             return;
         }
 
-        if (user.UserName.ToLower() == "admin")
+        if (user.UserName.ToLower().Equals("admin"))
         {
             throw new BusinessException(code: "400", message: "不能删除超级管理员");
         }

@@ -14,13 +14,24 @@ namespace VehicleApp.Domain.Vehicle
             if (await vehicleRepository.GetCountAsync() > 0)
                 return;
 
-            var vehicles = new List<VehicleAggregateRoot>
+            List<VehicleAggregateRoot> vehicles = new List<VehicleAggregateRoot>();
+
+            for (int i = 1; i <= 20; i++)
             {
-                new VehicleAggregateRoot(Guid.NewGuid(), "BMW", "X5", "2019","黄色", "2.0T",  10000,"as",Guid.NewGuid(),Guid.NewGuid()),
-                new VehicleAggregateRoot(Guid.NewGuid(), "Audi", "A4", "2018","白色", "2.5T",  15000,"as",Guid.NewGuid(),Guid.NewGuid()),
-                new VehicleAggregateRoot(Guid.NewGuid(), "Mercedes", "C63", "2017","红色", "3.0T",  20000,"as",Guid.NewGuid(),Guid.NewGuid()),
-                new VehicleAggregateRoot(Guid.NewGuid(), "Toyota", "Camry", "2016","蓝色", "2.0T",  12000,"as",Guid.NewGuid(),Guid.NewGuid()),
-            };
+                Guid vehicleId = Guid.NewGuid();
+                string vin = $"VIN{i:D17}";
+                string make = i % 2 == 0 ? "Toyota" : "BMW";
+                string model = i % 2 == 0 ? "Corolla" : "X5";
+                string year = (2010 + i % 10).ToString();
+                string color = i % 3 == 0 ? "Red" : (i % 3 == 1 ? "Blue" : "Black");
+                int mileage = i * 1000;
+                string licensePlate = $"ABC-{i:D3}";
+                Guid storeId = Guid.NewGuid();
+                Guid ownerId = Guid.NewGuid();
+
+                VehicleAggregateRoot vehicle = new VehicleAggregateRoot(vehicleId, vin, make, model, year, color, mileage, licensePlate, storeId, ownerId);
+                vehicles.Add(vehicle);
+            }
 
             await vehicleRepository.InsertManyAsync(vehicles);
         }

@@ -16,5 +16,8 @@ public class VehicleAppApplicationAutoMapperProfile : Profile
         CreateMap<OrganizationUnit, OrganizationUnitDto>().ForMember(dest => dest.CreationTime, opt => opt.MapFrom(src => src.CreationTime));
         CreateMap<CreateOrganizationUnitInput, OrganizationUnit>();
         CreateMap<UpdateOrganizationUnitInput, OrganizationUnit>();
+        CreateMap<VehiclePurchaseRecordEntity, VehiclePurchaseRecordDto>();
+        CreateMap<CreateVehiclePurchaseRecordDto, VehiclePurchaseRecordEntity>();
+        CreateMap<UpdateVehiclePurchaseRecordDto, VehiclePurchaseRecordEntity>();
     }
 }

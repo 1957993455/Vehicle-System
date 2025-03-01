@@ -1,7 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +13,11 @@ public class StoreDataSeedContributor(IRepository<StoreAggregateRoot, Guid> stor
 {
     public async Task SeedAsync(DataSeedContext context)
     {
+        if (await storeRepository.GetCountAsync() > 0)
+        {
+            return;
+        }
+
         var stores = new List<StoreAggregateRoot>();
 
         for (int i = 1; i <= 20; i++)

@@ -1,7 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
@@ -29,7 +26,7 @@ public class VehicleManager : DomainService
 
         var vehicle = await Repository.FindAsync(id);
 
-        if(vehicle is null)
+        if (vehicle is null)
             throw new BusinessException($"车辆不存在");
 
         //清除车辆相关信息
@@ -39,6 +36,4 @@ public class VehicleManager : DomainService
         //删除车辆
         await Repository.DeleteAsync(vehicle);
     }
-
-
 }

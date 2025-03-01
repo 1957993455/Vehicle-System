@@ -18,7 +18,7 @@ public class VehicleDto : AuditedEntityDto<Guid>
     /// <summary>
     /// 车辆制造商，如丰田、宝马等。
     /// </summary>
-    public string Make { get; set; }
+    public string Brand { get; set; }
 
     /// <summary>
     /// 车辆型号，如卡罗拉、X5 等。

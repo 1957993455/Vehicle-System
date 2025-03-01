@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleApp.EntityFrameworkCore.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,14 +13,16 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VehicleApp.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(VehicleAppDbContext))]
-    partial class VehicleAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250301022538_add_vehicle")]
+    partial class add_vehicle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -269,6 +272,7 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)")
                         .HasComment("门店描述");
@@ -585,6 +589,7 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
             modelBuilder.Entity("VehicleApp.Domain.Vehicle.VehiclePurchaseRecordEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Brand")
@@ -677,9 +682,6 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("nvarchar(17)")
                         .HasComment("车架号");
 
-                    b.Property<Guid?>("VehicleAggregateRootId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("VehicleId")
                         .HasColumnType("uniqueidentifier");
 
@@ -692,8 +694,6 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                     b.HasIndex("VIN")
                         .IsUnique()
                         .HasDatabaseName("UK_VehiclePurchaseRecord_VIN");
-
-                    b.HasIndex("VehicleAggregateRootId");
 
                     b.HasIndex("VehicleId")
                         .HasDatabaseName("IX_VehiclePurchaseRecord_VehicleId");
@@ -2540,13 +2540,6 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("VehicleApp.Domain.Vehicle.VehiclePurchaseRecordEntity", b =>
-                {
-                    b.HasOne("VehicleApp.Domain.Vehicle.VehicleAggregateRoot", null)
-                        .WithMany("Purchases")
-                        .HasForeignKey("VehicleAggregateRootId");
-                });
-
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.HasOne("Volo.Abp.AuditLogging.AuditLog", null)
@@ -2694,8 +2687,6 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                     b.Navigation("AccidentHistory");
 
                     b.Navigation("MaintenanceRecords");
-
-                    b.Navigation("Purchases");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

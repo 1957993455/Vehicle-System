@@ -18,9 +18,10 @@ public class StoreDto : AuditedEntityDto<Guid>
     public Guid? ManagerId { get; set; }
     public List<string> Tags { get; set; }
     public string Description { get; set; }
+    public string ManagerName { get; set; }
 }
 
-public class CreateStoreDto
+public class CreateStoreInput
 {
     public string Name { get; set; }
     public string StoreCode { get; set; }
@@ -30,11 +31,17 @@ public class CreateStoreDto
     public Guid RegionId { get; set; }
 }
 
-public class UpdateStoreDto
+public class UpdateStoreInput
 {
     public string Name { get; set; }
     public string BusinessHours { get; set; }
     public Guid? ManagerId { get; set; }
     public List<string> Tags { get; set; }
     public string Description { get; set; }
+}
+
+public class GetListStoreInput : PagedAndSortedResultRequestDto
+{
+    public string? Name { get; set; }
+    public StoreStatus? Status { get; set; }
 }

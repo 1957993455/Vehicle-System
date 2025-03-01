@@ -12,18 +12,18 @@ namespace VehicleApp.Domain.Shared.Enums
     public enum StoreStatus
     {
         /// <summary>试运营</summary>
-        Trial,
+        Trial=1,
 
         /// <summary>正常营业</summary>
-        Operational,
+        Operational=2,
 
         /// <summary>装修中</summary>
-        Renovating,
+        Renovating=4,
 
         /// <summary>暂停营业</summary>
-        Suspended,
+        Suspended=8,
 
         /// <summary>永久关闭</summary>
-        Closed
+        Closed=16
     }
 }

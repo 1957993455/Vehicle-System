@@ -14,7 +14,7 @@ public class VehicleEntityConfig : IEntityTypeConfiguration<VehicleAggregateRoot
         builder.HasKey(v => v.Id);
         builder.Property(v => v.Id).HasConversion<Guid>().IsRequired();
         builder.Property(v => v.VIN).HasMaxLength(50).IsRequired();
-        builder.Property(v => v.Make).HasMaxLength(100).IsRequired();
+        builder.Property(v => v.Brand).HasMaxLength(100).IsRequired();
         builder.Property(v => v.Model).HasMaxLength(100).IsRequired();
         builder.Property(v => v.Year).HasMaxLength(4).IsRequired();
         builder.Property(v => v.Color).HasMaxLength(50).IsRequired();

@@ -23,7 +23,7 @@ public class StoreController : VehicleAppController
     }
 
     [HttpGet]
-    public Task<PagedResultDto<StoreDto>> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    public Task<PagedResultDto<StoreDto>> GetListAsync([FromQuery] GetListStoreInput input)
     {
         return _storeAppService.GetListAsync(input);
     }
@@ -35,13 +35,13 @@ public class StoreController : VehicleAppController
     }
 
     [HttpPost]
-    public Task<StoreDto> CreateAsync([FromBody] CreateStoreDto input)
+    public Task<StoreDto> CreateAsync([FromBody] CreateStoreInput input)
     {
         return _storeAppService.CreateAsync(input);
     }
 
     [HttpPut("{id}")]
-    public Task<StoreDto> UpdateAsync(Guid id, [FromBody] UpdateStoreDto input)
+    public Task<StoreDto> UpdateAsync(Guid id, [FromBody] UpdateStoreInput input)
     {
         return _storeAppService.UpdateAsync(id, input);
     }

@@ -10,10 +10,11 @@ namespace VehicleApp.Application.Contracts.Store;
 public interface IStoreAppService : ICrudAppService<
     StoreDto,
     Guid,
-    PagedAndSortedResultRequestDto,
-    CreateStoreDto,
-    UpdateStoreDto>
+    GetListStoreInput,
+    CreateStoreInput,
+    UpdateStoreInput>
 {
     Task<StoreDto> ChangeStatusAsync(Guid id, StoreStatus newStatus);
+
     Task<StoreDto> RelocateAsync(Guid id, string newAddress, double longitude, double latitude);
 }

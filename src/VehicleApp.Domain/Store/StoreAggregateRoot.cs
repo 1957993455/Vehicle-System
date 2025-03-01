@@ -57,12 +57,12 @@ namespace VehicleApp.Domain.Store
         /// <summary>
         /// 营业时间配置
         /// </summary>
-        public string BusinessHours { get; private set; }
+        public string BusinessHours { get; protected set; }
 
         /// <summary>
         /// 门店状态
         /// </summary>
-        public StoreStatus Status { get; private set; }
+        public StoreStatus Status { get; protected set; }
 
         #endregion 运营信息
 
@@ -86,7 +86,7 @@ namespace VehicleApp.Domain.Store
         /// 门店特色标签
         /// </summary>
         /// <example>["24小时营业", "宠物友好", "无障碍设施"]</example>
-        public ICollection<string> Tags { get; set; } = new List<string>();
+        public ICollection<string> Tags { get; protected set; } = new List<string>();
 
         /// <summary>
         /// 门店描述（富文本）
@@ -95,7 +95,7 @@ namespace VehicleApp.Domain.Store
         /// 支持HTML内容（需过滤XSS）
         /// 最大长度：2000字符
         /// </remarks>
-        public string Description { get; set; }
+        public string? Description { get; protected set; }
 
         #endregion 扩展属性
 
@@ -114,6 +114,15 @@ namespace VehicleApp.Domain.Store
                 throw new BusinessException("ERR-STORE-001", "已关闭门店不可重新激活");
 
             Status = newStatus;
+        }
+
+        /// <summary>
+        /// 设置营业时间
+        /// </summary>
+        /// <param name="businessHours"></param>
+        public virtual void SetBusinessHours(string businessHours)
+        {
+            BusinessHours = businessHours;
         }
 
         /// <summary>

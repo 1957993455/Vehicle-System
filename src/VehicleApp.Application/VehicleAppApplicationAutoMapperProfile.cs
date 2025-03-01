@@ -1,7 +1,9 @@
 using System;
 using AutoMapper;
 using VehicleApp.Application.Contracts.Organization.Dtos;
+using VehicleApp.Application.Contracts.Store.Dtos;
 using VehicleApp.Application.Contracts.Vehicle.Dtos;
+using VehicleApp.Domain.Store;
 using VehicleApp.Domain.Vehicle;
 using Volo.Abp.Identity;
 
@@ -19,5 +21,8 @@ public class VehicleAppApplicationAutoMapperProfile : Profile
         CreateMap<VehiclePurchaseRecordEntity, VehiclePurchaseRecordDto>();
         CreateMap<CreateVehiclePurchaseRecordDto, VehiclePurchaseRecordEntity>();
         CreateMap<UpdateVehiclePurchaseRecordDto, VehiclePurchaseRecordEntity>();
+        CreateMap<StoreAggregateRoot, StoreDto>();
+        CreateMap<CreateStoreInput, StoreAggregateRoot>();
+        CreateMap<UpdateStoreInput, StoreAggregateRoot>();
     }
 }

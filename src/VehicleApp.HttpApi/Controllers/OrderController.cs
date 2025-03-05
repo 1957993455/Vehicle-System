@@ -35,13 +35,13 @@ public class OrderController : VehicleAppController
     }
 
     [HttpPost]
-    public Task<OrderDto> CreateAsync([FromBody] CreateOrderDto input)
+    public Task<OrderDto> CreateAsync([FromBody] CreateOrderInput input)
     {
         return _orderAppService.CreateAsync(input);
     }
 
     [HttpPut("{id}")]
-    public Task<OrderDto> UpdateAsync(Guid id, [FromBody] UpdateOrderDto input)
+    public Task<OrderDto> UpdateAsync(Guid id, [FromBody] UpdateOrderInput input)
     {
         return _orderAppService.UpdateAsync(id, input);
     }

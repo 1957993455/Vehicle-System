@@ -26,7 +26,7 @@ public class VehicleEntityConfig : IEntityTypeConfiguration<VehicleAggregateRoot
         builder.Property(v => v.Status).IsRequired();
         builder.Property(v => v.StoreId).IsRequired();
         builder.Property(v => v.OwnerId).IsRequired();
-
+        builder.Property(v => v.ImageUrl).IsRequired(false);
         builder.ConfigureByConvention();
         builder.ApplyObjectExtensionMappings();
     }

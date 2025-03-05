@@ -16,25 +16,16 @@ public class VehiclePurchaseRecordEntity : FullAuditedEntity<Guid>
     }
 
     public VehiclePurchaseRecordEntity(
+        Guid id,
         Guid vehicleId,
-        string brand,
-        string model,
-        string licensePlateNumber,
-        string vin,
-        EngineType engineType,
         DateTime purchaseDate,
         decimal purchasePrice,
         string supplierName,
         string supplierPhoneNumber,
         string paymentMethod,
-        string? remarks = null)
+        string? remarks = null): base(id)
     {
         SetVehicleId(vehicleId);
-        SetBrand(brand);
-        SetModel(model);
-        SetLicensePlate(licensePlateNumber);
-        SetVIN(vin);
-        SetEngineType(engineType);
         SetPurchaseInfo(purchaseDate, purchasePrice);
         SetSupplierInfo(supplierName, supplierPhoneNumber);
         SetPaymentMethod(paymentMethod);
@@ -45,31 +36,6 @@ public class VehiclePurchaseRecordEntity : FullAuditedEntity<Guid>
     /// 车辆的唯一标识符，关联车辆信息表
     /// </summary>
     public virtual Guid VehicleId { get; protected set; }
-
-    /// <summary>
-    /// 车辆的品牌，例如丰田、大众等
-    /// </summary>
-    public virtual string Brand { get; protected set; } = null!;
-
-    /// <summary>
-    /// 车辆的具体型号，如卡罗拉、帕萨特等
-    /// </summary>
-    public virtual string Model { get; protected set; } = null!;
-
-    /// <summary>
-    /// 车辆的车牌号，用于唯一标识在路上行驶的车辆
-    /// </summary>
-    public virtual string LicensePlateNumber { get; protected set; } = null!;
-
-    /// <summary>
-    /// 车辆的车架号，是车辆的唯一识别代码
-    /// </summary>
-    public virtual string VIN { get; protected set; } = null!;
-
-    /// <summary>
-    /// 车辆的发动机类型
-    /// </summary>
-    public virtual EngineType EngineType { get; protected set; }
 
     /// <summary>
     /// 车辆的购买日期，记录车辆购买的具体时间
@@ -101,56 +67,17 @@ public class VehiclePurchaseRecordEntity : FullAuditedEntity<Guid>
     /// </summary>
     public virtual string Remarks { get; protected set; } = null!;
 
-
-
     private void SetVehicleId(Guid vehicleId)
     {
         Check.NotNull(vehicleId, nameof(vehicleId));
         VehicleId = vehicleId;
     }
 
-    private void SetBrand(string brand)
-    {
-        Brand = Check.NotNullOrWhiteSpace(
-            brand,
-            nameof(brand),
-            maxLength: 50);
-    }
 
-    private void SetModel(string model)
-    {
-        Model = Check.NotNullOrWhiteSpace(
-            model,
-            nameof(model),
-            maxLength: 50);
-    }
 
-    private void SetLicensePlate(string licensePlate)
-    {
-        if (!Regex.IsMatch(licensePlate, @"^[\u4e00-\u9fa5][A-Z][A-Z0-9]{5}$"))
-        {
-            throw new BusinessException("Vehicle:InvalidLicensePlate");
-        }
-        LicensePlateNumber = licensePlate;
-    }
 
-    private void SetVIN(string vin)
-    {
-        if (!Regex.IsMatch(vin, @"^[A-HJ-NPR-Z0-9]{17}$"))
-        {
-            throw new BusinessException("Vehicle:InvalidVIN");
-        }
-        VIN = vin;
-    }
 
-    private void SetEngineType(EngineType engineType)
-    {
-        if (!Enum.IsDefined(typeof(EngineType), engineType))
-        {
-            throw new BusinessException("Vehicle:InvalidEngineType");
-        }
-        EngineType = engineType;
-    }
+
 
     private void SetPurchaseInfo(DateTime purchaseDate, decimal purchasePrice)
     {
@@ -193,5 +120,4 @@ public class VehiclePurchaseRecordEntity : FullAuditedEntity<Guid>
     {
         Remarks = remarks?.Trim() ?? string.Empty;
     }
-
 }

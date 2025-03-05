@@ -21,27 +21,6 @@ public class VehiclePurchaseRecordEntityConfig : IEntityTypeConfiguration<Vehicl
         // 配置主键
         builder.HasKey(x => x.Id);
 
-        // 配置基本属性
-        builder.Property(x => x.Brand)
-            .IsRequired()
-            .HasMaxLength(50)
-            .HasComment("品牌");
-
-        builder.Property(x => x.Model)
-            .IsRequired()
-            .HasMaxLength(50)
-            .HasComment("型号");
-
-        builder.Property(x => x.LicensePlateNumber)
-            .IsRequired()
-            .HasMaxLength(10)
-            .HasComment("车牌号");
-
-        builder.Property(x => x.VIN)
-            .IsRequired()
-            .HasMaxLength(17)
-            .HasComment("车架号");
-
         builder.Property(x => x.PurchaseDate)
             .IsRequired()
             .HasComment("购买日期");
@@ -73,14 +52,6 @@ public class VehiclePurchaseRecordEntityConfig : IEntityTypeConfiguration<Vehicl
         // 添加索引
         builder.HasIndex(x => x.VehicleId)
             .HasDatabaseName("IX_VehiclePurchaseRecord_VehicleId");
-
-        builder.HasIndex(x => x.VIN)
-            .IsUnique()
-            .HasDatabaseName("UK_VehiclePurchaseRecord_VIN");
-
-        builder.HasIndex(x => x.LicensePlateNumber)
-            .IsUnique()
-            .HasDatabaseName("UK_VehiclePurchaseRecord_LicensePlate");
 
         builder.ConfigureByConvention();
         builder.ApplyObjectExtensionMappings();

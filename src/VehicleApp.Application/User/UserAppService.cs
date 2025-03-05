@@ -9,10 +9,11 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
+using IdentityUser = Volo.Abp.Identity.IdentityUser;
 
 namespace VehicleApp.Application.User;
 
-public class UserAppService(IRepository<IdentityUser, Guid> userRepository, CurrentUser currentUser, UserManager<IdentityUser> userManager) : IUserAppService
+public class UserAppService(IRepository<Volo.Abp.Identity.IdentityUser, Guid> userRepository, CurrentUser currentUser, UserManager<IdentityUser> userManager) : IUserAppService
 {
     [UnitOfWork]
     public async Task BatchDeleteUsers(IEnumerable<Guid> userIds)

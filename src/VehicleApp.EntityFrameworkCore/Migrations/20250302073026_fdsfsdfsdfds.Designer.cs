@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleApp.EntityFrameworkCore.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VehicleApp.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(VehicleAppDbContext))]
-    partial class VehicleAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250302073026_fdsfsdfsdfds")]
+    partial class fdsfsdfsdfds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -623,6 +626,12 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("品牌");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("CreationTime");
@@ -639,6 +648,9 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DeletionTime");
 
+                    b.Property<int>("EngineType")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -652,6 +664,18 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                     b.Property<Guid?>("LastModifierId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
+
+                    b.Property<string>("LicensePlateNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasComment("车牌号");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("型号");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -686,6 +710,12 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("nvarchar(11)")
                         .HasComment("供应商电话");
 
+                    b.Property<string>("VIN")
+                        .IsRequired()
+                        .HasMaxLength(17)
+                        .HasColumnType("nvarchar(17)")
+                        .HasComment("车架号");
+
                     b.Property<Guid?>("VehicleAggregateRootId")
                         .HasColumnType("uniqueidentifier");
 
@@ -693,6 +723,14 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LicensePlateNumber")
+                        .IsUnique()
+                        .HasDatabaseName("UK_VehiclePurchaseRecord_LicensePlate");
+
+                    b.HasIndex("VIN")
+                        .IsUnique()
+                        .HasDatabaseName("UK_VehiclePurchaseRecord_VIN");
 
                     b.HasIndex("VehicleAggregateRootId");
 

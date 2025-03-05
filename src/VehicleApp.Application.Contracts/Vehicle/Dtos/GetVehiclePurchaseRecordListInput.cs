@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using Volo.Abp.Application.Dtos;
 
 namespace VehicleApp.Application.Contracts.Vehicle.Dtos;
@@ -11,10 +13,15 @@ public class GetVehiclePurchaseRecordListInput : PagedAndSortedResultRequestDto
     /// <summary>
     /// 搜索关键字，用于模糊查询品牌、型号、车牌号、VIN
     /// </summary>
-    public string Filter { get; set; }
+    public string? Vin { get; set; }
 
     /// <summary>
-    /// 按车辆ID筛选
+    /// 开始日期
     /// </summary>
-    public Guid? VehicleId { get; set; }
+    public string? StartDate { get; set; }
+
+    /// <summary>
+    /// 结束日期
+    /// </summary>
+    public string? EndDate { get; set; }
 }

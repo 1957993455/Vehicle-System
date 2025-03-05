@@ -70,5 +70,9 @@ public class VehicleController : VehicleAppController, IVehicleAppService
         return _vehicleAppService.ChangeStatusAsync(id, newStatus);
     }
 
-
+    [HttpPost("batch-delete")]
+    public async Task BatchDeleteAsync([FromBody] Guid[] ids)
+    {
+        await _vehicleAppService.BatchDeleteAsync(ids);
+    }
 }

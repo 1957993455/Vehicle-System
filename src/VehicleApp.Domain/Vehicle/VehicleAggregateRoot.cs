@@ -86,6 +86,12 @@ public class VehicleAggregateRoot : FullAuditedAggregateRoot<Guid>
     /// </summary>
     public virtual string VIN { get; protected set; }
 
+
+    /// <summary>
+    /// 车辆图片Url
+    /// </summary>
+    public virtual string? ImageUrl { get; set; }
+
     /// <summary>
     /// 车辆制造商，如丰田、宝马等
     /// </summary>

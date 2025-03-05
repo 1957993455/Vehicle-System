@@ -126,6 +126,11 @@ public class BlobController(IBlobAppService blobAppService, ILogger<BlobControll
         }
     }
 
+    /// <summary>
+    /// 文件下载接口
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("{name}")]
     public async Task<IActionResult> GetAsync(string name)

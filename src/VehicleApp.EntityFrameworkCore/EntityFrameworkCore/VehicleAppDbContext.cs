@@ -33,6 +33,7 @@ public class VehicleAppDbContext :
 
     public DbSet<MaintenanceRecordEntity> MaintenanceRecords { get; set; }
     public DbSet<AccidentRecordEntity> AccidentRecords { get; set; }
+    public DbSet<VehiclePurchaseRecordEntity> PurchaseRecords { get; set; }
 
     // 订单相关
     public DbSet<OrderAggregateRoot> Orders { get; set; }

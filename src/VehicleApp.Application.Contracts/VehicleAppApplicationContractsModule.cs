@@ -1,15 +1,12 @@
-﻿using Volo.Abp.Account;
+﻿using VehicleApp.Domain.Shared;
+using Volo.Abp.Account;
+using Volo.Abp.BlobStoring.FileSystem;
+using Volo.Abp.FeatureManagement;
+using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
-using Volo.Abp.FeatureManagement;
-using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
-using VehicleApp.Domain.Shared;
-using Volo.Abp.BlobStoring;
-using Volo.Abp.BlobStoring.FileSystem;
-using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 
 namespace VehicleApp.Application.Contracts;
 

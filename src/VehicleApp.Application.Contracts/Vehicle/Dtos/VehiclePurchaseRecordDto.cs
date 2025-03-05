@@ -68,4 +68,8 @@ public class VehiclePurchaseRecordDto : AuditedEntityDto<Guid>
     /// 备注信息
     /// </summary>
     public string Remarks { get; set; }
+
+
+    public string ImageUrl { get; set; }
+
 }

@@ -14,6 +14,8 @@ public interface IVehicleAppService : ICrudAppService<
     UpdateVehicleDto>
 {
     Task<VehicleDto> UpdateMileageAsync(Guid id, int newMileage);
+
     Task<VehicleDto> ChangeStatusAsync(Guid id, VehicleStatus newStatus);
 
+    Task BatchDeleteAsync(Guid[] ids);
 }

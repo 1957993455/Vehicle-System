@@ -1,5 +1,3 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
 
 using System;
 using System.Threading.Tasks;
@@ -11,7 +9,7 @@ using Volo.Abp.Identity;
 namespace VehicleApp.Application.Roles;
 
 /// <summary>
-/// 角色应用服务
+/// 锟斤拷色应锟矫凤拷锟斤拷
 /// </summary>
 /// <param name="identityRoleRepository"></param>
 public class RoleAppService(IIdentityRoleRepository identityRoleRepository) : ApplicationService, IRoleAppService

@@ -9,6 +9,7 @@ public class OrderDto : AuditedEntityDto<Guid>
 {
     public Guid VehicleId { get; set; }
     public Guid CustomerId { get; set; }
+    public string CustomerName { get;  set; }
     public decimal TotalAmount { get; set; }
     public OrderStatus Status { get; set; }
     public PaymentStatus PaymentStatus { get; set; }
@@ -16,30 +17,4 @@ public class OrderDto : AuditedEntityDto<Guid>
     public DateTime? PickupTime { get; set; }
     public DateTime? ReturnTime { get; set; }
     public string Remarks { get; set; }
-}
-
-public class CreateOrderDto
-{
-    public Guid VehicleId { get; set; }
-    public Guid CustomerId { get; set; }
-    public decimal TotalAmount { get; set; }
-    public DateTime? PickupTime { get; set; }
-    public DateTime? ReturnTime { get; set; }
-    public string Remarks { get; set; }
-    public string ItemName { get; set; }
-    public decimal UnitPrice { get; set; }
-    public int Quantity { get; set; }
-    public string Description { get; set; }
-}
-
-public class UpdateOrderDto
-{
-    public string Remarks { get; set; }
-}
-
-public class GetOrderListInput : PagedAndSortedResultRequestDto
-{
-    public OrderStatus? Status { get; set; }
-    public Guid? CustomerId { get; set; }
-    public Guid? VehicleId { get; set; }
 }

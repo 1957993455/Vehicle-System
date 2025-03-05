@@ -21,6 +21,7 @@ namespace VehicleApp.Domain.OpenIddict;
 /* Creates initial data that is needed to property run the application
  * and make client-to-server communication possible.
  */
+
 public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDependency
 {
     private readonly IConfiguration _configuration;
@@ -67,6 +68,18 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 Resources = { "VehicleApp" }
             });
         }
+        if (await _scopeManager.FindByNameAsync("WeChatManagementSample") == null)
+        {
+            await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor
+            {
+                Name = "WeChatManagementSample",
+                DisplayName = "WeChatManagementSample API",
+                Resources =
+                {
+                    "WeChatManagementSample"
+                }
+            });
+        }
     }
 
     private async Task CreateApplicationsAsync()
@@ -77,11 +90,11 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             OpenIddictConstants.Permissions.Scopes.Phone,
             OpenIddictConstants.Permissions.Scopes.Profile,
             OpenIddictConstants.Permissions.Scopes.Roles,
-            "VehicleApp"
+            "VehicleApp",
+             "OpenIddict_Wechat"
         };
 
         var configurationSection = _configuration.GetSection("OpenIddict:Applications");
-
 
         //Console Test / Angular Client
         var consoleAndAngularClientId = configurationSection["VehicleApp_App:ClientId"];
@@ -111,12 +124,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             );
         }
 
-
-
-
-
-
-
         // Swagger Client
         var swaggerClientId = configurationSection["VehicleApp_Swagger:ClientId"];
         if (!swaggerClientId.IsNullOrWhiteSpace())
@@ -137,8 +144,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 logoUri: "/images/clients/swagger.svg"
             );
         }
-
-
     }
 
     private async Task CreateApplicationAsync(

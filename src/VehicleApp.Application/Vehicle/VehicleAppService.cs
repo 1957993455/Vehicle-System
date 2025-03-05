@@ -9,6 +9,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Uow;
 
 namespace VehicleApp.Application.Vehicle;
 
@@ -17,7 +18,7 @@ namespace VehicleApp.Application.Vehicle;
 /// </summary>
 /// <param name="repository"></param>
 /// <param name="vehicleManager"></param>
-public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repository,VehicleManager vehicleManager) :
+public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repository, VehicleManager vehicleManager) :
     CrudAppService<
         VehicleAggregateRoot,
         VehicleDto,
@@ -52,7 +53,7 @@ public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repositor
     {
         IQueryable<VehicleAggregateRoot> query = await base.CreateFilteredQueryAsync(input);
         query = query.WhereIf(input.status != null, x => x.Status == input.status);
-        query = query.WhereIf(input.VIN != null, x =>(input.VIN!= null && x.VIN.Contains(input.VIN)));
+        query = query.WhereIf(input.VIN != null, x => (input.VIN != null && x.VIN.Contains(input.VIN)));
         return query;
     }
 
@@ -65,6 +66,21 @@ public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repositor
     {
         await CheckDeletePolicyAsync();
 
-       await vehicleManager.DeleteAsync(id);
+        await vehicleManager.DeleteAsync(id);
+    }
+
+    /// <summary>
+    /// ÅúÁ¿É¾³ý³µÁ¾
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    [UnitOfWork]
+    public async Task BatchDeleteAsync(Guid[] ids)
+    {
+        await CheckDeletePolicyAsync();
+        foreach (var id in ids)
+        {
+            await vehicleManager.DeleteAsync(id);
+        }
     }
 }

@@ -9,9 +9,11 @@ public class VehicleAppPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var vehicleGroup = context.AddGroup(VehicleAppPermissions.GroupName, L("Permission:VehicleApp"));
+        // 车辆管理分组
+        var vehicleGroup = context.AddGroup(
+            VehicleAppPermissions.Vehicle.GroupName,
+            L("Permission:VehicleManagement"));
 
-        // 车辆权限
         var vehiclePermission = vehicleGroup.AddPermission(
             VehicleAppPermissions.Vehicle.Default,
             L("Permission:Vehicle"));
@@ -32,8 +34,12 @@ public class VehicleAppPermissionDefinitionProvider : PermissionDefinitionProvid
             VehicleAppPermissions.Vehicle.ChangeStatus,
             L("Permission:Vehicle.ChangeStatus"));
 
-        // 维护记录权限
-        var maintenancePermission = vehicleGroup.AddPermission(
+        // 维护记录分组
+        var maintenanceGroup = context.AddGroup(
+            VehicleAppPermissions.MaintenanceRecord.GroupName,
+            L("Permission:MaintenanceManagement"));
+
+        var maintenancePermission = maintenanceGroup.AddPermission(
             VehicleAppPermissions.MaintenanceRecord.Default,
             L("Permission:MaintenanceRecord"));
 
@@ -44,8 +50,12 @@ public class VehicleAppPermissionDefinitionProvider : PermissionDefinitionProvid
             VehicleAppPermissions.MaintenanceRecord.View,
             L("Permission:MaintenanceRecord.View"));
 
-        // 门店权限
-        var storePermission = vehicleGroup.AddPermission(
+        // 门店分组
+        var storeGroup = context.AddGroup(
+            VehicleAppPermissions.Store.GroupName,
+            L("Permission:StoreManagement"));
+
+        var storePermission = storeGroup.AddPermission(
             VehicleAppPermissions.Store.Default,
             L("Permission:Store"));
 
@@ -65,8 +75,12 @@ public class VehicleAppPermissionDefinitionProvider : PermissionDefinitionProvid
             VehicleAppPermissions.Store.Relocate,
             L("Permission:Store.Relocate"));
 
-        // 组织权限
-        var orgPermission = vehicleGroup.AddPermission(
+        // 组织分组
+        var orgGroup = context.AddGroup(
+            VehicleAppPermissions.Organization.GroupName,
+            L("Permission:OrganizationManagement"));
+
+        var orgPermission = orgGroup.AddPermission(
             VehicleAppPermissions.Organization.Default,
             L("Permission:Organization"));
 
@@ -82,6 +96,22 @@ public class VehicleAppPermissionDefinitionProvider : PermissionDefinitionProvid
         orgPermission.AddChild(
             VehicleAppPermissions.Organization.ManageMembers,
             L("Permission:Organization.ManageMembers"));
+
+        // 审计日志分组
+        var auditLogGroup = context.AddGroup(
+            VehicleAppPermissions.AuditLog.GroupName,
+            L("Permission:AuditLogManagement"));
+
+        var auditLogPermission = auditLogGroup.AddPermission(
+            VehicleAppPermissions.AuditLog.Default,
+            L("Permission:AuditLog"));
+
+        auditLogPermission.AddChild(
+            VehicleAppPermissions.AuditLog.View,
+            L("Permission:AuditLog.View"));
+        auditLogPermission.AddChild(
+            VehicleAppPermissions.AuditLog.Export,
+            L("Permission:AuditLog.Export"));
     }
 
     private static LocalizableString L(string name)

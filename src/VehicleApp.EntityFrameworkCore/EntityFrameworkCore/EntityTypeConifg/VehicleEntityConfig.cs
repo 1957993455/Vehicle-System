@@ -27,6 +27,14 @@ public class VehicleEntityConfig : IEntityTypeConfiguration<VehicleAggregateRoot
         builder.Property(v => v.StoreId).IsRequired();
         builder.Property(v => v.OwnerId).IsRequired();
         builder.Property(v => v.ImageUrl).IsRequired(false);
+        builder.OwnsOne(x => x.Address, y =>
+        {
+            y.Property(a=>a.City).HasMaxLength(100).IsRequired();
+            y.Property(a=>a.Province).HasMaxLength(100).IsRequired();
+            y.Property(a => a.Street).HasMaxLength(100).IsRequired();
+            y.Property(a => a.Detail).HasMaxLength(100).IsRequired();
+            y.Property(a => a.District).HasMaxLength(100).IsRequired();
+        });
         builder.ConfigureByConvention();
         builder.ApplyObjectExtensionMappings();
     }

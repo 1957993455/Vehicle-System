@@ -139,6 +139,8 @@ public class VehicleAppHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureBlobStoring(context);
+
+
     }
 
     private static void ConfigureAuthentication(ServiceConfigurationContext context)

@@ -40,7 +40,6 @@ public static class VehicleAppModuleExtensionConfigurator
                    );
                    user.AddOrUpdateProperty<string?>(EntityPropertyExtensionConsts.User.Avatar, property =>
                    {
-                       property.Attributes.Add(new RequiredAttribute());
                    });
                    user.AddOrUpdateProperty<string>(EntityPropertyExtensionConsts.User.Address, property =>
                    {

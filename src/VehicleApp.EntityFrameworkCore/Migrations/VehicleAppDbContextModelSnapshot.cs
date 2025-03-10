@@ -278,12 +278,6 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ExtraProperties");
 
-                    b.Property<string>("FullAddress")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasComment("完整地址");
-
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -2519,6 +2513,52 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                                 .HasForeignKey("StoreAggregateRootId");
                         });
 
+                    b.OwnsOne("VehicleApp.Domain.ValueObjects.AddressValueObject", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("StoreAggregateRootId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasComment("市");
+
+                            b1.Property<string>("Detail")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasComment("详细地址");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasComment("区");
+
+                            b1.Property<string>("Province")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasComment("省");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasComment("街道");
+
+                            b1.HasKey("StoreAggregateRootId");
+
+                            b1.ToTable("Stores");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StoreAggregateRootId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
                     b.Navigation("Location")
                         .IsRequired();
                 });
@@ -2539,6 +2579,50 @@ namespace VehicleApp.EntityFrameworkCore.Migrations
                         .IsRequired();
 
                     b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("VehicleApp.Domain.Vehicle.VehicleAggregateRoot", b =>
+                {
+                    b.OwnsOne("VehicleApp.Domain.ValueObjects.AddressValueObject", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("VehicleAggregateRootId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<string>("Detail")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<string>("Province")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.HasKey("VehicleAggregateRootId");
+
+                            b1.ToTable("Vehicle");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VehicleAggregateRootId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("VehicleApp.Domain.Vehicle.VehiclePurchaseRecordEntity", b =>

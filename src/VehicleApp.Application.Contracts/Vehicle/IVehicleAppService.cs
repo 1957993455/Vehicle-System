@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VehicleApp.Application.Contracts.Vehicle.Dtos;
 using VehicleApp.Domain.Shared.Enums;
@@ -18,4 +19,7 @@ public interface IVehicleAppService : ICrudAppService<
     Task<VehicleDto> ChangeStatusAsync(Guid id, VehicleStatus newStatus);
 
     Task BatchDeleteAsync(Guid[] ids);
+
+
+    Task<List<VehicleDto>> GetListAsync(string filter);
 }

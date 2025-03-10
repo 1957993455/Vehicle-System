@@ -8,6 +8,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using VehicleApp.Application.Contracts.Permissions;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace VehicleApp.HttpApi.Controllers;
 
@@ -75,4 +76,7 @@ public class VehicleController : VehicleAppController, IVehicleAppService
     {
         await _vehicleAppService.BatchDeleteAsync(ids);
     }
+
+    [HttpGet("search/{filter?}")]
+    public Task<List<VehicleDto>> GetListAsync(string? filter = null) => _vehicleAppService.GetListAsync(filter);
 }

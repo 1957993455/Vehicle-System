@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.StaticFiles;
 
 namespace VehicleApp.HttpApi.Controllers;
 
+/// <summary>
+/// 文件控制器
+/// </summary>
 [RemoteService]
 [Area("Blob")]
 [Route("api/blob")]

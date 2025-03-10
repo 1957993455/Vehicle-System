@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using VehicleApp.Application.Contracts.Order;
 using VehicleApp.Application.Contracts.Order.Dtos;
 using VehicleApp.Domain.Order;
-using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -18,7 +17,6 @@ public class OrderAppService(
     OrderManager orderManager,
     IRepository<OrderDetailEntity, Guid> orderDetailRepository,
     IdentityUserManager userManager,
-    IRepository<IdentityUser, Guid> userRepository,
     IdentityRoleManager roleManager)
     :
         CrudAppService<
@@ -43,16 +41,13 @@ public class OrderAppService(
         await Repository.InsertAsync(order);
 
         // 创建订单明细
-
         var orderDetail = await orderManager.AddOrderDetailAsync(
             order,
             input.ItemName,
             input.UnitPrice,
             input.Quantity,
             input.Description);
-
         await orderDetailRepository.InsertAsync(orderDetail);
-
         return ObjectMapper.Map<OrderAggregateRoot, OrderDto>(order);
     }
 

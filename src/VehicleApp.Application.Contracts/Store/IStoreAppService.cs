@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VehicleApp.Application.Contracts.Store.Dtos;
 using VehicleApp.Domain.Shared.Enums;
@@ -14,7 +15,18 @@ public interface IStoreAppService : ICrudAppService<
     CreateStoreInput,
     UpdateStoreInput>
 {
+    /// <summary>
+    /// 更改门店状态
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="newStatus"></param>
+    /// <returns></returns>
     Task<StoreDto> ChangeStatusAsync(Guid id, StoreStatus newStatus);
 
-    Task<StoreDto> RelocateAsync(Guid id, string newAddress, double longitude, double latitude);
+    /// <summary>
+    /// 批量删除门店
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    Task BatchDeleteAsync(List<Guid> ids);
 }

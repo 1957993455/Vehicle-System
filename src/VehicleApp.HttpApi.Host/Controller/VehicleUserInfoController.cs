@@ -15,6 +15,7 @@ namespace VehicleApp.HttpApi.Host.Controller;
 [ExposeServices(typeof(UserInfoController))]
 public class VehicleUserInfoController : UserInfoController
 {
+    
     protected override async Task<Dictionary<string, object>> GetUserInfoClaims()
     {
         var user = await UserManager.GetUserAsync(User);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VehicleApp.Domain.ValueObjects;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
@@ -27,7 +28,8 @@ public class StoreDataSeedContributor(IRepository<StoreAggregateRoot, Guid> stor
             var fullAddress = $"{RandomCity()} {RandomDistrict()} {RandomStreet()}";
             var location = new GeoLocationValueObject(RandomDouble(), RandomDouble());
             var regionId = Guid.NewGuid();
-            var store = new StoreAggregateRoot(name, storeCode, fullAddress, location, regionId);
+            var address = new AddressValueObject("中国", "北京市","北京市","中国", "北京市");
+            var store = new StoreAggregateRoot(name, storeCode, address, location, regionId);
             store.SetBusinessHours("9:00-18:00");
 
             stores.Add(store);

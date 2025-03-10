@@ -15,6 +15,7 @@ using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.OpenIddict.Scopes;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.Uow;
+using VehicleApp.Domain.Shared.OpenIddict;
 
 namespace VehicleApp.Domain.OpenIddict;
 
@@ -26,7 +27,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 {
     private readonly IConfiguration _configuration;
     private readonly IOpenIddictApplicationRepository _openIddictApplicationRepository;
-    private readonly IAbpApplicationManager _applicationManager;
+    private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IOpenIddictScopeRepository _openIddictScopeRepository;
     private readonly IOpenIddictScopeManager _scopeManager;
     private readonly IPermissionDataSeeder _permissionDataSeeder;
@@ -35,7 +36,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
     public OpenIddictDataSeedContributor(
         IConfiguration configuration,
         IOpenIddictApplicationRepository openIddictApplicationRepository,
-        IAbpApplicationManager applicationManager,
+        IOpenIddictApplicationManager applicationManager,
         IOpenIddictScopeRepository openIddictScopeRepository,
         IOpenIddictScopeManager scopeManager,
         IPermissionDataSeeder permissionDataSeeder,
@@ -114,7 +115,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.ClientCredentials,
                     OpenIddictConstants.GrantTypes.RefreshToken,
                     "LinkLogin",
-                    "Impersonation"
+                    "Impersonation",
+                    VehicleAppOpenIddictConsts.PhoneNumberLoginGrantType
                 },
                 scopes: commonScopes,
                 redirectUri: consoleAndAngularClientRootUrl,
@@ -143,7 +145,24 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 clientUri: swaggerRootUrl.EnsureEndsWith('/') + "swagger",
                 logoUri: "/images/clients/swagger.svg"
             );
+
+            //手机号以注册
+            await CreateApplicationAsync(
+                 applicationType: OpenIddictConstants.ApplicationTypes.Web,
+                 name: "VehicleApp_PhoneVerify",
+                 type: OpenIddictConstants.ClientTypes.Public,
+                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                 displayName: "手机号以注册",
+                 secret: null,
+                 grantTypes: new List<string> { VehicleAppOpenIddictConsts.PhoneNumberLoginGrantType },
+                 scopes: commonScopes,
+                 redirectUri: $"{swaggerRootUrl}/swagger/oauth2-redirect.html"
+
+             );
+
         }
+
+
     }
 
     private async Task CreateApplicationAsync(
@@ -272,6 +291,11 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     application.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.IdTokenToken);
                     application.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.Token);
                 }
+            }
+
+            if (grantType == VehicleAppOpenIddictConsts.PhoneNumberLoginGrantType)
+            {
+                application.Permissions.Add($"gt:{VehicleAppOpenIddictConsts.PhoneNumberLoginGrantType}");
             }
 
             if (!buildInGrantTypes.Contains(grantType))

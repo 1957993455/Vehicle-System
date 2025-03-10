@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp;
 using VehicleApp.Domain.Shared.Enums;
+using VehicleApp.Domain.ValueObjects;
 
 namespace VehicleApp.Domain.Store
 {
@@ -23,7 +24,7 @@ namespace VehicleApp.Domain.Store
         /// 长度限制：2-100字符
         /// 格式要求：需包含品牌+位置标识
         /// </remarks>
-        public string Name { get; private set; }
+        public string Name { get; protected init; }
 
         /// <summary>
         /// 门店唯一编码（业务标识）
@@ -35,22 +36,18 @@ namespace VehicleApp.Domain.Store
         /// </remarks>
         public string StoreCode { get; private set; }
 
-        #endregion 基础信息
-
-        #region 地理位置
-
         /// <summary>
-        /// 完整地址信息
+        /// 地址值对象
         /// </summary>
-        /// <example>北京市朝阳区建国路88号华贸中心B1层</example>
-        public string FullAddress { get; private set; }
+        public AddressValueObject Address { get; private set; }
+
+        #endregion 基础信息
 
         /// <summary>
         /// 地理坐标值对象
         /// </summary>
         public GeoLocationValueObject Location { get; private set; }
 
-        #endregion 地理位置
 
         #region 运营信息
 
@@ -131,13 +128,13 @@ namespace VehicleApp.Domain.Store
         /// <param name="newAddress">完整地址</param>
         /// <param name="longitude">经度</param>
         /// <param name="latitude">纬度</param>
-        public void Relocate(string newAddress, double longitude, double latitude)
+        public void Relocate(AddressValueObject newAddress, double longitude, double latitude)
         {
             if (Status == StoreStatus.Operational)
                 throw new BusinessException("ERR-STORE-002", "营业中门店不可变更位置");
 
-            FullAddress = newAddress;
             Location = new GeoLocationValueObject(longitude, latitude);
+            Address = newAddress;
         }
 
         #endregion 领域方法
@@ -150,7 +147,7 @@ namespace VehicleApp.Domain.Store
         public StoreAggregateRoot(
             string name,
             string storeCode,
-            string fullAddress,
+            AddressValueObject address,
             GeoLocationValueObject location,
             Guid regionId)
         {
@@ -159,7 +156,7 @@ namespace VehicleApp.Domain.Store
 
             Name = name;
             StoreCode = storeCode.ToUpperInvariant();
-            FullAddress = fullAddress;
+            Address = address;
             Location = location;
             RegionId = regionId;
             Status = StoreStatus.Trial;

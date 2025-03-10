@@ -9,12 +9,14 @@ using Volo.Abp.Emailing;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.Localization;
+using Volo.Abp.MailKit;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.OpenIddict;
 using Volo.Abp.SettingManagement;
+using Volo.Abp.Sms.Aliyun;
 using Volo.Abp.TenantManagement;
 
 namespace VehicleApp.Domain;
@@ -31,12 +33,27 @@ namespace VehicleApp.Domain;
     typeof(AbpEmailingModule),
     typeof(AbpIdentityDomainModule),
     typeof(AbpOpenIddictDomainModule),
-    typeof(AbpTenantManagementDomainModule)
+    typeof(AbpTenantManagementDomainModule),
+    typeof(AbpMailKitModule),
+    typeof(AbpSmsAliyunModule)
     )]
 public class VehicleAppDomainModule : AbpModule
 {
+
+
+
+
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+
+
+        Configure<AbpAliyunSmsOptions>(options =>
+            {
+                options.AccessKeyId = ".....";
+                options.AccessKeySecret = ".......";
+                options.EndPoint = "dysmsapi.aliyuncs.com";
+            });
+
         Configure<AbpMultiTenancyOptions>(options =>
         {
             options.IsEnabled = MultiTenancyConsts.IsEnabled;
@@ -64,8 +81,7 @@ public class VehicleAppDomainModule : AbpModule
             options.Languages.Add(new LanguageInfo("sv", "sv", "Svenska"));
         });
 
-#if DEBUG
-        context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
-#endif
+        // context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using VehicleApp.Domain.Shared.Enums;
+using VehicleApp.Domain.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -151,6 +152,11 @@ public class VehicleAggregateRoot : FullAuditedAggregateRoot<Guid>
     /// 车辆所有者的唯一标识，所有者可以是用户或公司
     /// </summary>
     public virtual Guid OwnerId { get; protected set; }
+
+    /// <summary>
+    /// 车辆的地址信息，包括省份、城市、区县、详细地址等
+    /// </summary>
+    public virtual AddressValueObject Address { get; set; }
 
     /// <summary>
     /// 车辆的维护记录集合，记录车辆的维护历史信息

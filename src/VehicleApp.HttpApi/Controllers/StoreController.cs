@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,9 +59,9 @@ public class StoreController : VehicleAppController
         return _storeAppService.ChangeStatusAsync(id, newStatus);
     }
 
-    [HttpPut("{id}/location")]
-    public Task<StoreDto> RelocateAsync(Guid id, [FromBody] RelocateStoreRequest request)
+    [HttpPost("batch-delete")]
+    public Task BatchDeleteAsync([FromBody] List<Guid> ids)
     {
-        return _storeAppService.RelocateAsync(id, request.NewAddress, request.Longitude, request.Latitude);
+        return _storeAppService.BatchDeleteAsync(ids);
     }
 }

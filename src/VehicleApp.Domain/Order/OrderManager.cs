@@ -4,6 +4,7 @@ using Volo.Abp.Domain.Services;
 using Volo.Abp.Domain.Repositories;
 using VehicleApp.Domain.Shared.Enums;
 using Volo.Abp;
+using Volo.Abp.Auditing;
 
 namespace VehicleApp.Domain.Order;
 

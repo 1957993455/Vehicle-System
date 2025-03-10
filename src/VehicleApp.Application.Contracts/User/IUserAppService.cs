@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
 
 namespace VehicleApp.Application.Contracts.User;
 
-public interface IUserAppService : IApplicationService
+public interface IUserAppService : IApplicationService, ITransientDependency
 {
     /// <summary>
-    /// ¸üĞÂÓÃ»§×´Ì¬
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½×´Ì¬
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="isEnabled"></param>
@@ -17,12 +18,23 @@ public interface IUserAppService : IApplicationService
     Task UpdateStatus(Guid userId, bool isEnabled);
 
     /// <summary>
-    /// ¸üĞÂÓÃ»§ÊÖ»úºÅ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ö»ï¿½ï¿½ï¿½
     /// </summary>
     Task UpdatePhoneNumber(Guid userId, string phoneNumber);
 
     /// <summary>}
-    /// ÅúÁ¿É¾³ıÓÃ»§
+    /// ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½Ã»ï¿½
     /// </summary>
     Task BatchDeleteUsers(IEnumerable<Guid> userIds);
+
+    Task UpdateAvatarAsync(Guid id, string avatar);
+
+    /// <summary>
+    /// å‘é€é‚®ä»¶
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="subject"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    Task SendEmailAsync(string email, string subject, string message);
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VehicleApp.Application.Contracts.Vehicle;
@@ -14,7 +15,7 @@ using Volo.Abp.Uow;
 namespace VehicleApp.Application.Vehicle;
 
 /// <summary>
-/// ³µÁ¾Ó¦ÓÃ·şÎñ
+/// ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã·ï¿½ï¿½ï¿½
 /// </summary>
 /// <param name="repository"></param>
 /// <param name="vehicleManager"></param>
@@ -45,7 +46,7 @@ public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repositor
     }
 
     /// <summary>
-    /// ¹¹½¨²éÑ¯¹ıÂË
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -58,7 +59,7 @@ public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repositor
     }
 
     /// <summary>
-    /// É¾³ı³µÁ¾
+    /// É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -70,7 +71,7 @@ public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repositor
     }
 
     /// <summary>
-    /// ÅúÁ¿É¾³ı³µÁ¾
+    /// æ‰¹é‡åˆ é™¤è½¦è¾†
     /// </summary>
     /// <param name="ids"></param>
     /// <returns></returns>
@@ -82,5 +83,18 @@ public class VehicleAppService(IRepository<VehicleAggregateRoot, Guid> repositor
         {
             await vehicleManager.DeleteAsync(id);
         }
+    }
+
+    /// <summary>
+    /// æ ¹æ®è½¦å‹æ¨¡ç³ŠæŸ¥è¯¢è½¦è¾†
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    public async Task<List<VehicleDto>> GetListAsync(string filter)
+    {
+        var query = await Repository.GetQueryableAsync();
+        query = query.WhereIf(!string.IsNullOrEmpty(filter), x => x.Model.Contains(filter));
+        var vehicles = await AsyncExecuter.ToListAsync(query);
+        return ObjectMapper.Map<List<VehicleAggregateRoot>, List<VehicleDto>>(vehicles);
     }
 }

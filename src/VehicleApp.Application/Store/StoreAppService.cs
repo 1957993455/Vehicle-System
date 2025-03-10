@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VehicleApp.Application.Contracts.Store;
@@ -6,6 +7,7 @@ using VehicleApp.Application.Contracts.Store.Dtos;
 using VehicleApp.Domain.Shared;
 using VehicleApp.Domain.Shared.Enums;
 using VehicleApp.Domain.Store;
+using VehicleApp.Domain.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Data;
@@ -15,7 +17,7 @@ using Volo.Abp.Identity;
 namespace VehicleApp.Application.Store;
 
 /// <summary>
-/// √≈µÍ”¶”√∑˛ŒÒ
+/// ÔøΩ≈µÔøΩ”¶ÔøΩ√∑ÔøΩÔøΩÔøΩ
 /// </summary>
 public class StoreAppService :
     CrudAppService<
@@ -43,11 +45,11 @@ public class StoreAppService :
     public override async Task<StoreDto> CreateAsync(CreateStoreInput input)
     {
         var location = new GeoLocationValueObject(input.Longitude, input.Latitude);
-
+        var address = new AddressValueObject(input.Province, input.City, input.District, input.Street, input.Detail);
         var store = await _storeManager.CreateAsync(
             input.Name,
             input.StoreCode,
-            input.FullAddress,
+            address,
             location,
             input.RegionId);
 
@@ -63,14 +65,6 @@ public class StoreAppService :
         return ObjectMapper.Map<StoreAggregateRoot, StoreDto>(store);
     }
 
-    public async Task<StoreDto> RelocateAsync(Guid id, string newAddress, double longitude, double latitude)
-    {
-        var store = await Repository.GetAsync(id);
-        store.Relocate(newAddress, longitude, latitude);
-        await Repository.UpdateAsync(store);
-        return ObjectMapper.Map<StoreAggregateRoot, StoreDto>(store);
-    }
-
     protected override async Task<IQueryable<StoreAggregateRoot>> CreateFilteredQueryAsync(GetListStoreInput input)
     {
         var query = await base.CreateFilteredQueryAsync(input);
@@ -82,7 +76,7 @@ public class StoreAppService :
     public override async Task<PagedResultDto<StoreDto>> GetListAsync(GetListStoreInput input)
     {
         PagedResultDto<StoreDto> result = await base.GetListAsync(input);
-        //∏˘æ›id«¯≤È—Øπ‹¿Ì’ﬂ–≈œ¢
+        //ÔøΩÔøΩÔøΩÔøΩidÔøΩÔøΩÔøΩÔøΩ—ØÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩœ¢
 
         var managerIds = result.Items.Select(x => x.ManagerId).Distinct();
 
@@ -95,12 +89,25 @@ public class StoreAppService :
             if (manager == null)
             {
                 item.ManagerName = "Œ¥÷™";
+                item.ManagerPhone = "Œ¥÷™";
                 continue;
             }
 
             item.ManagerName = manager.UserName;
+            item.ManagerPhone = manager.PhoneNumber;
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// ÊâπÈáèÂà†Èô§Èó®Â∫ó
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    public async Task BatchDeleteAsync(List<Guid> ids)
+    {
+        var stores = await Repository.GetListAsync(x => ids.Contains(x.Id));
+        await Repository.DeleteManyAsync(stores);
     }
 }

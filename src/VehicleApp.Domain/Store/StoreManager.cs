@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp;
+using VehicleApp.Domain.ValueObjects;
 
 namespace VehicleApp.Domain.Store;
 
@@ -18,7 +19,7 @@ public class StoreManager : DomainService
     public async Task<StoreAggregateRoot> CreateAsync(
         string name,
         string storeCode,
-        string fullAddress,
+        AddressValueObject fullAddress,
         GeoLocationValueObject location,
         Guid regionId)
     {

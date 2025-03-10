@@ -7,6 +7,7 @@ using Asp.Versioning;
 using System.ComponentModel.DataAnnotations;
 using VehicleApp.Application.Contracts.User;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace VehicleApp.HttpApi.Controllers;
 
@@ -18,7 +19,7 @@ namespace VehicleApp.HttpApi.Controllers;
 [Route("api/identity/users")]
 [Area(IdentityRemoteServiceConsts.ModuleName)]
 [ControllerName("User")]
-public class UserController(IUserAppService userAppService) : VehicleAppController
+public class UserController(IUserAppService userAppService,IConfiguration configuration) : VehicleAppController
 {
     /// <summary>
     /// 修改用户手机号
@@ -58,5 +59,30 @@ public class UserController(IUserAppService userAppService) : VehicleAppControll
     public virtual async Task BatchDeleteAsync([FromQuery] List<Guid> input)
     {
         await userAppService.BatchDeleteUsers(input);
+    }
+
+    /// <summary>
+    /// 修改用户状态
+    /// </summary>
+    /// <param name="id">用户ID</param>
+    /// <param name="avatar">头像地址</param>
+    /// <returns>更新后的用户信息</returns>
+    [HttpPut("avatar/{id}")]
+    public virtual async Task<IActionResult> UpdateAvatarAsync(
+        [Required] Guid id,
+        [FromBody] string avatar)
+    {
+        await userAppService.UpdateAvatarAsync(id, avatar);
+        return Ok();
+    }
+
+
+    [HttpGet("avataraaa")]
+    public virtual async Task<IActionResult> GetAvatarAsync()
+    {
+        var res = configuration["StringEncryption:DefaultPassPhrase"];
+
+        await Task.CompletedTask;
+        return Ok(res);
     }
 }

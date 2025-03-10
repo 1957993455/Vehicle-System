@@ -32,11 +32,32 @@ public class StoreEntityConfig : IEntityTypeConfiguration<StoreAggregateRoot>
             .IsUnique()
             .HasDatabaseName("UK_Store_Code");
 
-        // 配置地理位置
-        builder.Property(x => x.FullAddress)
-            .HasMaxLength(200)
-            .IsRequired()
-            .HasComment("完整地址");
+        // 配置地址值对象
+        builder.OwnsOne(x => x.Address, address =>
+        {
+            address.Property(a => a.Province)
+                .HasMaxLength(100)
+                .IsRequired()
+                .HasComment("省");
+
+            address.Property(a => a.City)
+                .HasMaxLength(100)
+                .IsRequired()
+                .HasComment("市");
+
+            address.Property(a => a.District)
+                .HasMaxLength(100)
+                .IsRequired()
+                .HasComment("区");
+            address.Property(a => a.Street)
+                .HasMaxLength(100)
+                .IsRequired()
+                .HasComment("街道");
+            address.Property(a => a.Detail)
+                .HasMaxLength(200)
+                .IsRequired()
+                .HasComment("详细地址");
+        });
 
         // 配置地理位置值对象
         builder.OwnsOne(x => x.Location, location =>

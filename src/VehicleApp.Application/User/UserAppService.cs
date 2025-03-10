@@ -4,17 +4,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using VehicleApp.Application.Contracts.User;
+using VehicleApp.Domain.Shared;
 using Volo.Abp;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Emailing;
 using Volo.Abp.Identity;
+using Volo.Abp.MailKit;
+using Volo.Abp.Settings;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
 using IdentityUser = Volo.Abp.Identity.IdentityUser;
 
 namespace VehicleApp.Application.User;
 
-public class UserAppService(IRepository<Volo.Abp.Identity.IdentityUser, Guid> userRepository, CurrentUser currentUser, UserManager<IdentityUser> userManager) : IUserAppService
+public class UserAppService(
+    IRepository<IdentityUser, Guid> userRepository,
+    CurrentUser currentUser,
+    UserManager<IdentityUser> userManager,
+    IMailKitSmtpEmailSender emailSender) : IUserAppService
 {
+
     [UnitOfWork]
     public async Task BatchDeleteUsers(IEnumerable<Guid> userIds)
     {
@@ -48,6 +58,26 @@ public class UserAppService(IRepository<Volo.Abp.Identity.IdentityUser, Guid> us
         }
     }
 
+    /// <summary>
+    /// 更新头像
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="avatar"></param>
+    /// <exception cref="UserFriendlyException"></exception>
+    public async Task UpdateAvatarAsync(Guid id, string avatar)
+    {
+        var user = await userRepository.GetAsync(id);
+        if (user == null)
+        {
+            throw new UserFriendlyException("Could not find user with id: " + id);
+        }
+
+        var res = user.GetProperty(EntityPropertyExtensionConsts.User.Avatar);
+        user.SetProperty(EntityPropertyExtensionConsts.User.Avatar, avatar);
+        await userRepository.UpdateAsync(user, autoSave: true);
+
+    }
+
     public async Task UpdatePhoneNumber(Guid userId, string phoneNumber)
     {
         var user = await userRepository.GetAsync(userId) ?? throw new UserFriendlyException($"Could not find user with id: {userId}.");
@@ -67,5 +97,17 @@ public class UserAppService(IRepository<Volo.Abp.Identity.IdentityUser, Guid> us
         var user = await userRepository.GetAsync(userId) ?? throw new UserFriendlyException($"Could not find user with id: {userId}.");
         user.SetIsActive(isEnabled);
         await userRepository.UpdateAsync(user, autoSave: true);
+    }
+
+    /// <summary>
+    /// 发送邮件
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="subject"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public async Task SendEmailAsync(string email, string subject, string message)
+    {
+        await emailSender.SendAsync("1957993455@qq.com", subject, message);
     }
 }
